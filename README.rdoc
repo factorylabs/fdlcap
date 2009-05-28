@@ -1,0 +1,7 @@
+= fdlcap
+
+Description goes here.
+
+== Copyright
+
+Copyright (c) 2009 Gabe Varela. See LICENSE for details.
