@@ -6,9 +6,12 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "fdlcap"
     gem.summary = %Q{a set of capistrano recipies we use regularly at Factory Design Labs}
-    gem.email = "gvarela@gmail.com"
-    gem.homepage = "http://github.com/gvarela/fdlcap"
-    gem.authors = ["Gabe Varela"]
+    gem.email = "interactive@factorylabs.com"
+    gem.homepage = "http://github.com/factorylabs/fdlcap"
+    gem.authors = ["Factory Design Labs"]
+    gem.add_dependency('engineyard-eycap', '>= 0.4.7')
+    gem.add_dependency('capistrano', '>= 2.5.5')
+    gem.add_dependency('capistrano-ext', '>= 1.2.1')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 

@@ -15,6 +15,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       server = servers.first
       if server
         symlink_dirs.each do |share|
+          `echo '#{password}' | /usr/bin/pbcopy`
           execute( "rsync -P -a -h -e 'ssh -p #{server.port || 22}' #{user}@#{server.host}:#{shared_path}/#{share}/* #{share}", "unable to run rsync files")
         end
       else
@@ -30,6 +31,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       server = servers.first
       if server
         symlink_dirs.each do |share|
+          `echo '#{password}' | /usr/bin/pbcopy`
           execute( "rsync -P -a -h -e 'ssh -p #{server.port || 22}' #{share}/* #{user}@#{server.host}:#{shared_path}/#{share}/", "unable to run rsync files")
         end
       else
