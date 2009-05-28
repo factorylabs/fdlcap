@@ -5,7 +5,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "fdlcap"
-    gem.summary = %Q{TODO}
+    gem.summary = %Q{a set of capistrano recipies we use regularly at Factory Design Labs}
     gem.email = "gvarela@gmail.com"
     gem.homepage = "http://github.com/gvarela/fdlcap"
     gem.authors = ["Gabe Varela"]
