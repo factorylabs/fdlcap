@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+path = ARGV[0]
+File.mkdir_p File.join(path, 'deploy')
