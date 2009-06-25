@@ -11,9 +11,16 @@ Capistrano::Configuration.instance(:must_exist).load do
     desc "Pull files from a remote server"
     task :download_file, :roles => :app, :except => { :no_release => true } do
       ENV['FILES'].split(',').each do |file|
-        download file, File.basename(file), :via => :scp
+        get "#{current_path}/#{file}", File.basename(file)
       end
     end
+  end
+  
+  # Clean up old releases
+  if exists?(:perform_cleanup)
+    after "deploy",                   "deploy:cleanup"
+    after "deploy:migrations" ,       "deploy:cleanup"
+    after "deploy:long" ,             "deploy:cleanup"
   end
   
 end

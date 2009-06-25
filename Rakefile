@@ -10,6 +10,7 @@ begin
     gem.homepage = "http://github.com/factorylabs/fdlcap"
     gem.authors = ["Factory Design Labs"]
     gem.add_dependency('engineyard-eycap', '>= 0.4.7')
+    gem.add_dependency('zilkey-auto_tagger', '>= 0.0.9')
     gem.add_dependency('capistrano', '>= 2.5.5')
     gem.add_dependency('capistrano-ext', '>= 1.2.1')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings

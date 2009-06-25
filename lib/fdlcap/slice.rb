@@ -3,12 +3,12 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :slice do
     
     desc "Copy the maintenance page from the public directory to the shared directory"
-    task :copy_maintenance_page do
+    task :copy_maintenance_page, :roles => :app do
       upload "public/maintenance.html","#{shared_path}/system/maintenance.html.custom", :via => :scp
     end
 
     desc "Tail the Rails import log for this environment"
-    task :tail_import_logs, :roles => :queue do
+    task :tail_import_logs, :roles => :utility do
       run "tail -f #{shared_path}/log/import-#{rails_env}.log" do |channel, stream, data|
         puts # for an extra line break before the host name
         puts "#{channel[:server]} -> #{data}"
@@ -16,12 +16,20 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
     
-    desc "Execute an arbitrary rake task on slices with a specified role"
-    task :rake do
-      task = ENV['TASK']
-      run "cd #{current_path} && rake #{task} RAILS_ENV=#{rails_env}"
+    desc "Tail the Rails log for this environment"
+    task :tail_logs, :roles => :utility do
+      run "tail -f #{shared_path}/log/#{rails_env}.log" do |channel, stream, data|
+        puts # for an extra line break before the host name
+        puts "#{channel[:server]} -> #{data}"
+        break if stream == :err
+      end
     end
     
+  end
+  
+  # Deploy the custom maintenance page
+  if exists?(:use_custom_maintenance_page)
+    before "deploy:web:disable",      "slice:copy_maintenance_page"
   end
   
 end
