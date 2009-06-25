@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "bin/fdlcap",
+     "fdlcap.gemspec",
      "features/fdlcap.feature",
      "features/step_definitions/fdlcap_steps.rb",
      "features/support/env.rb",
