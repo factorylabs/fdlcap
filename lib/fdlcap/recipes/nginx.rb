@@ -39,7 +39,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   
       desc "Setup Nginx vhost config"
       task :vhost, :roles => :web do
-        result = render_erb_template(File.dirname(__FILE__) + "/templates/nginx.vhost.conf.erb")
+        result = render_erb_template(File.join(File.dirname(__FILE__), '..','templates','nginx.vhost.conf.erb'))
         put result, "/tmp/nginx.vhost.conf"
         sudo "mkdir -p /etc/nginx/vhosts"
         sudo "cp /tmp/nginx.vhost.conf /etc/nginx/vhosts/#{application}.conf"
@@ -48,7 +48,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   
       desc "Setup Nginx vhost auth config"
       task :vhost_auth, :roles => :web do
-        result = render_erb_template(File.dirname(__FILE__) + "/templates/nginx.auth.conf.erb")
+        result = render_erb_template(File.join(File.dirname(__FILE__), '..','templates','nginx.auth.conf.erb'))
         put result, "/tmp/nginx.auth.conf"
         sudo "mkdir -p /etc/nginx/vhosts"
         sudo "cp /tmp/nginx.vhost.conf /etc/nginx/vhosts/#{application}.auth.conf"
@@ -74,7 +74,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :conf, :roles => :web do
         if can_configure_nginx
       
-          result = render_erb_template(File.dirname(__FILE__) + "/templates/nginx.conf.erb")
+          result = render_erb_template(File.join(File.dirname(__FILE__),'..','templates','nginx.conf.erb')
           put result, "/tmp/nginx.conf"
           sudo "cp /tmp/nginx.conf /etc/nginx/nginx.conf"
       
