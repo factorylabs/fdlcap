@@ -1,11 +1,6 @@
 Capistrano::Configuration.instance(:must_exist).load do
   
   namespace :slice do
-    
-    desc "Copy the maintenance page from the public directory to the shared directory"
-    task :copy_maintenance_page, :roles => :app do
-      upload "public/maintenance.html","#{shared_path}/system/maintenance.html.custom", :via => :scp
-    end
 
     desc "Tail the Rails import log for this environment"
     task :tail_import_logs, :roles => :utility do
@@ -28,7 +23,13 @@ Capistrano::Configuration.instance(:must_exist).load do
   end
   
   # Deploy the custom maintenance page
-  if exists?(:use_custom_maintenance_page)
+  define_recipe :custom_maintenance_page do
+    
+    desc "Copy the maintenance page from the public directory to the shared directory"
+    task :copy_maintenance_page, :roles => :app do
+      upload "public/maintenance.html","#{shared_path}/system/maintenance.html.custom", :via => :scp
+    end
+    
     before "deploy:web:disable",      "slice:copy_maintenance_page"
   end
   

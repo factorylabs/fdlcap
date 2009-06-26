@@ -17,7 +17,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   end
   
   # Clean up old releases
-  if exists?(:perform_cleanup)
+  define_recipe :perform_cleanup do
     after "deploy",                   "deploy:cleanup"
     after "deploy:migrations" ,       "deploy:cleanup"
     after "deploy:long" ,             "deploy:cleanup"
