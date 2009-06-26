@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs"]
@@ -27,27 +27,30 @@ Gem::Specification.new do |s|
      "features/step_definitions/fdlcap_steps.rb",
      "features/support/env.rb",
      "lib/fdlcap.rb",
-     "lib/fdlcap/autotagger.rb",
-     "lib/fdlcap/craken.rb",
-     "lib/fdlcap/database.rb",
-     "lib/fdlcap/delayed_job.rb",
-     "lib/fdlcap/deploy.rb",
-     "lib/fdlcap/geminstaller.rb",
-     "lib/fdlcap/newrelic.rb",
-     "lib/fdlcap/nginx.rb",
-     "lib/fdlcap/performance.rb",
-     "lib/fdlcap/rake.rb",
+     "lib/fdlcap/defaults.rb",
+     "lib/fdlcap/extensions/configuration.rb",
+     "lib/fdlcap/extensions/recipe_definition.rb",
      "lib/fdlcap/recipes.rb",
-     "lib/fdlcap/rsync.rb",
-     "lib/fdlcap/sass.rb",
-     "lib/fdlcap/slice.rb",
-     "lib/fdlcap/ssh.rb",
-     "lib/fdlcap/symlinks.rb",
+     "lib/fdlcap/recipes/autotagger.rb",
+     "lib/fdlcap/recipes/craken.rb",
+     "lib/fdlcap/recipes/database.rb",
+     "lib/fdlcap/recipes/delayed_job.rb",
+     "lib/fdlcap/recipes/deploy.rb",
+     "lib/fdlcap/recipes/geminstaller.rb",
+     "lib/fdlcap/recipes/newrelic.rb",
+     "lib/fdlcap/recipes/nginx.rb",
+     "lib/fdlcap/recipes/performance.rb",
+     "lib/fdlcap/recipes/rake.rb",
+     "lib/fdlcap/recipes/rsync.rb",
+     "lib/fdlcap/recipes/sass.rb",
+     "lib/fdlcap/recipes/slice.rb",
+     "lib/fdlcap/recipes/ssh.rb",
+     "lib/fdlcap/recipes/symlinks.rb",
+     "lib/fdlcap/recipes/thin.rb",
+     "lib/fdlcap/recipes/thinking_sphinx.rb",
      "lib/fdlcap/templates/nginx.auth.conf.erb",
      "lib/fdlcap/templates/nginx.conf.erb",
      "lib/fdlcap/templates/nginx.vhost.conf.erb",
-     "lib/fdlcap/thin.rb",
-     "lib/fdlcap/thinking_sphinx.rb",
      "test/fdlcap_test.rb",
      "test/test_helper.rb"
   ]
