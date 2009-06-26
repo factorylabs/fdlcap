@@ -74,7 +74,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :conf, :roles => :web do
         if can_configure_nginx
       
-          result = render_erb_template(File.join(File.dirname(__FILE__),'..','templates','nginx.conf.erb')
+          result = render_erb_template(File.join(File.dirname(__FILE__),'..','templates','nginx.conf.erb'))
           put result, "/tmp/nginx.conf"
           sudo "cp /tmp/nginx.conf /etc/nginx/nginx.conf"
       
