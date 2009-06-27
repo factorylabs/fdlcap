@@ -6,7 +6,6 @@ require 'fdlcap/extensions/recipe_definition'
 require 'fdlcap/defaults'
 
 # Load external fdlcap dependencies
-require 'capistrano/ext/multistage'
 require 'eycap/recipes'
 
 # Load up custom recipe chunks
@@ -25,6 +24,7 @@ require 'fdlcap/recipes/ruby_inline'
 require 'fdlcap/recipes/sass'
 require 'fdlcap/recipes/slice'
 require 'fdlcap/recipes/ssh'
+require 'fdlcap/recipes/stages'
 require 'fdlcap/recipes/symlinks'
 require 'fdlcap/recipes/thin'
 require 'fdlcap/recipes/thinking_sphinx'

@@ -1,7 +1,7 @@
 Capistrano::Configuration.instance(:must_exist).load do
-  define_recipe :release_tagger do
+  define_recipe :release_tagger do |*stages|
     # Set up some default stages
-    set :autotagger_stages, [ :ci, :staging, :production ] unless exists?(:autotagger_stages)
+    set :autotagger_stages, stages.flatten unless exists?(:autotagger_stages)  && !stages.empty?
     
     # This needs to be loaded after the stages are set up
     require 'release_tagger'

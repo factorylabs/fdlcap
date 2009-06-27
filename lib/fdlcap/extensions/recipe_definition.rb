@@ -7,8 +7,13 @@ Capistrano::Configuration.instance(:must_exist).load do
     recipes[name] = block
   end
   
-  def use_recipe(recipe)
-    fetch(:fdlcap_recipes)[recipe].call
+  def use_recipe(recipe, *args)
+    recipe_block = fetch(:fdlcap_recipes)[recipe]
+    if recipe_block
+      recipe_block.call(*args)
+    else
+      raise ArgumentError, "Recipe => :#{recipe} not found"
+    end
   end
   
 end
