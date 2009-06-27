@@ -26,13 +26,53 @@ Capistrano::Configuration.instance(:must_exist).load do
   
   namespace :autobench do
     
-    task :test_search, :roles => :app do
-      url = "/vehicles/search?search[zip]=06108&search[radius]=10+Miles&search[view_type]=block&search[per_page]=10&search[year_from]=From+Year&search[year_to]=To+Year&search[model]=Model&search[price]=Price&search[color]=Color&search[mileage]=Mileage&commit=Search"
-      run "/usr/local/bin/autobench --single_host --host1=audivehiclesearch.com --uri1=#{url} --file=/tmp/test_search.bench.txt --low_rate=1 --high_rate=20 --rate_step=2 --num_call=2 --num_conn=200"
-      download "/tmp/test_search.bench.txt", "autobench/test_search.bench.txt", :via => :scp
-      run "rm /tmp/test_search.bench.txt"
+    task :run_test, :roles => :app do
+      options = ENV['OPTIONS'] || "--low_rate=1 --high_rate=20 --rate_step=2 --num_call=2 --num_conn=200"
+      run "/usr/local/bin/autobench --single_host --host1=#{ENV['HOST']} --uri1=#{ENV['URL']} --file=/tmp/test.bench.txt #{options}"
+      download "/tmp/test.bench.txt", "autobench/test.bench.txt", :via => :scp
+      run "rm /tmp/test.bench.txt"
     end
     
+  end
+  
+  namespace :install do
+
+    task :setup do
+      sudo "rm -rf src"
+      run  "mkdir -p src"
+    end
+
+    desc "Install httperf"
+    task :httperf do
+      setup
+
+      cmd = [
+        "cd src",
+        "wget ftp://ftp.hpl.hp.com/pub/httperf/httperf-0.9.0.tar.gz",
+        "tar xfz httperf-0.9.0.tar.gz",
+        "cd httperf-0.9.0",
+        "./configure --prefix=/usr/local",
+        "make", 
+        "sudo make install"
+        ].join(' && ')
+        run cmd
+        run 'rm httperf-0.9.0.tar.gz'
+    end
+
+    task :autobench do
+      setup
+
+      cmd = [
+        "cd src",
+        "wget http://www.xenoclast.org/autobench/downloads/autobench-2.1.2.tar.gz",
+        "tar xfz autobench-2.1.2.tar.gz",
+        "cd autobench-2.1.2",
+        "make", 
+        "sudo make install"
+        ].join(' && ')
+        run cmd
+        run 'rm autobench-2.1.2.tar.gz'
+    end
   end
 
 end

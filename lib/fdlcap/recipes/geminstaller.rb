@@ -4,25 +4,47 @@ Capistrano::Configuration.instance(:must_exist).load do
     # Tasks
     #
     namespace :geminstaller do
-      desc "Run geminstaller"
-      task :run, :only => { :geminstaller => true } do
-        sudo "/usr/bin/geminstaller -c #{release_path}/config/geminstaller.yml --geminstaller-output=all --rubygems-output=all"
+      desc <<-DESC
+      install geminstaller
+      DESC
+      task :install, :only => { :geminstaller => true } do
+        as = fetch(:runner, "app")
+        via = fetch(:run_method, :sudo)
+        invoke_command "gem install geminstaller", :via => via, :as => as
+        invoke_command "gem source -a http://gems.github.com", :via => via, :as => as
       end
 
-      desc "Install geminstaller"
-      task :install, :only => { :geminstaller => true } do
-        sudo "gem install geminstaller"
-        sudo "gem source -a http://gems.github.com"
+      desc <<-DESC
+      run geminstaller rake task to install gems on the server
+      DESC
+      task :run, :only => { :geminstaller => true } do
+        as = fetch(:runner, "app")
+        via = fetch(:run_method, :sudo)
+        invoke_command "/usr/bin/geminstaller -c #{current_path}/config/geminstaller.yml  --geminstaller-output=all --rubygems-output=all", :via => via, :as => as
+      end
+
+      desc <<-DESC
+      add geminstaller config to list of remote dependencies.
+      DESC
+      task :add_remote_gem_dependencies, :only => { :geminstaller => true } do
+        CONFIG_PATH = File.join('config', 'geminstaller.yml')
+        if File.exists?(CONFIG_PATH)
+          gems = YAML.load(ERB.new(File.read(CONFIG_PATH)).result)['gems']
+          gems.each do |gem|
+            depend :remote, :gem, gem['name'], gem['version']
+          end
+        end
       end
     end
     
     # 
     # Callbacks
     #
-    after "deploy:setup",             "geminstaller:install"
-    after "geminstaller:install",     "geminstaller:run"
-    after "deploy:symlink",           "geminstaller:run"
-    after "geminstaller:run",         "deploy:migrate"
+    before "deploy:check",           "geminstaller:add_remote_gem_dependencies"
+    after  "deploy:setup",           "geminstaller:install"
+    after  "geminstaller:install",   "geminstaller:run"
+    after  "deploy:symlink",         "geminstaller:run"
+    after  "geminstaller:run",       "deploy:migrate"
   end
   
 end

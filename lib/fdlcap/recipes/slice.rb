@@ -20,6 +20,20 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
     
+    desc <<-DESC
+    grep the production.log to find long running queries
+    DESC
+    task :grep_requests, :roles => :app do
+      run "grep 'Completed in [0-9]*' #{shared_path}/log/#{rails_env}.log"
+    end
+
+    desc <<-DESC
+    grep the production.log to find long running queries
+    DESC
+    task :grep_long_requests, :roles => :app do
+      run "grep 'Completed in [0-9][0-9]' #{shared_path}/log/#{rails_env}.log"
+    end
+    
   end
   
   # Deploy the custom maintenance page
