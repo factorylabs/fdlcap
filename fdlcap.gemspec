@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.2.5"
+  s.version = "0.2.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs"]
@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
      "lib/fdlcap/recipes/performance.rb",
      "lib/fdlcap/recipes/rake.rb",
      "lib/fdlcap/recipes/rsync.rb",
+     "lib/fdlcap/recipes/ruby_inline.rb",
      "lib/fdlcap/recipes/sass.rb",
      "lib/fdlcap/recipes/slice.rb",
      "lib/fdlcap/recipes/ssh.rb",
