@@ -17,23 +17,35 @@ Some of the recipes include:
 - slice - tail arbitrary server logs and show custom maintenance pages
 - ssh - shortcut to execute ssh sessions and tunnels to remote servers
 - thinking_sphinx - set up deploy callbacks for thinking sphinx
+- stages - enable capistrano-ext/multistage
+- database - recipies for pulling production mysql databases locally, also can push to remote db
+- thin - manage a thin deployment
+- nginx - control nginx as well as generate configurations
 
 One kind of cool addition is a simple mechanism for bundling callbacks, configuration variables, and tasks into reusable recipe chunks that can easily be dropped into your deploy configuration.
 
-For example, to automatically set up tasks and callbacks for delayed_job and sass, you would add the following to deploy.rb:
+For example, to automatically set up tasks and callbacks for stages, delayed_job and sass, you would add the following to deploy.rb:
 
   use_recipe :delayed_job
   use_recipe :sass
+  use_recipe :stages, :staging, :production
 
 You can also create your own recipe chunks with the define_recipe method:
 
   define_recipe :my_recipe do
     # tasks, config, whatever go here
   end
-
+  
 Then include them in your deploy.rb:
 
   use_recipe :my_recipe
+  
+Recipes can also take arguments (such as in the stages recipe)
+
+  define_recipe :stages do |*stages|
+    set :stages, stages.flatten unless exists?(:stages) && !stages.empty?
+    require 'capistrano/ext/multistage'
+  end
 
 ==Prereqs
 
