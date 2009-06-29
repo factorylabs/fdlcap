@@ -40,11 +40,10 @@ Capistrano::Configuration.instance(:must_exist).load do
     # 
     # Callbacks
     #
-    before "deploy:check",           "geminstaller:add_remote_gem_dependencies"
-    after  "deploy:setup",           "geminstaller:install"
-    after  "geminstaller:install",   "geminstaller:run"
-    after  "deploy:symlink",         "geminstaller:run"
-    after  "geminstaller:run",       "deploy:migrate"
+    before "deploy:check",          "geminstaller:add_remote_gem_dependencies"
+    after  "deploy:setup",          "geminstaller:install"
+    after  "geminstaller:install",  "geminstaller:run"
+    after  "deploy:update",         "geminstaller:run"
   end
   
 end
