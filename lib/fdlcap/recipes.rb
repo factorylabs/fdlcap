@@ -2,9 +2,6 @@
 require 'fdlcap/extensions/configuration'
 require 'fdlcap/extensions/recipe_definition'
 
-# Set up configuration defaults
-require 'fdlcap/defaults'
-
 # Load external fdlcap dependencies
 require 'eycap/recipes'
 
@@ -14,6 +11,7 @@ require 'fdlcap/recipes/craken'
 require 'fdlcap/recipes/database'
 require 'fdlcap/recipes/delayed_job'
 require 'fdlcap/recipes/deploy'
+require 'fdlcap/recipes/fdl_defaults'
 require 'fdlcap/recipes/geminstaller'
 require 'fdlcap/recipes/newrelic'
 require 'fdlcap/recipes/nginx'
