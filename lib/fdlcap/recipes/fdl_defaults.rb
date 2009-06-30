@@ -5,6 +5,12 @@ Capistrano::Configuration.instance(:must_exist).load do
     set :scm,           :git
     set :keep_releases, 5
     set :deploy_via,    :remote_cache
+    
+    use_recipe :symlinks
+    use_recipe :geminstaller
+    use_recipe :perform_cleanup
+    use_recipe :symlink_configs
+     
   end
   
 end

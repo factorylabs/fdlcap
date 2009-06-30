@@ -129,14 +129,15 @@ Capistrano::Configuration.instance(:must_exist).load do
       raise "Missing database.yml entry for #{rails_env.to_s}" unless db_info
 
       database = db_info["database"]
+      tables = ENV['TABLES'] ? ENV['TABLES'].split(',').join(' ') : ''
       dump_file = "/tmp/#{database}.sql"
-
+      
       db_host = db_info["host"]
       host = ""
       host_arg = " -h #{db_host}" if db_host
       run "mysqldump -e -q --single-transaction \
         -u #{db_info["username"]} --password=#{db_info["password"]} \
-        --database #{db_info["database"]} #{host_arg} | gzip > #{dump_file}.gz"
+         #{host_arg} #{db_info["database"]} #{tables}| gzip > #{dump_file}.gz"
 
 
       get "#{dump_file}.gz", "#{dump_file}.gz"
@@ -150,8 +151,10 @@ Capistrano::Configuration.instance(:must_exist).load do
       gunzip_cmd = "gunzip -c #{dump_file}.gz"
       sed_cmd = "sed 's/#{db_info["database"]}/#{target_db_info["database"]}/g' > #{dump_file}"
       execute("#{gunzip_cmd} | #{sed_cmd}", "gunzip/sed of #{dump_file}.gz failed")
-      execute("mysqladmin #{target_db_login} drop #{target_db_info["database"]} -f", "mysqladmin drop failed")
-      execute("mysqladmin #{target_db_login} create #{target_db_info["database"]}", "mysqladmin create failed")
+      unless ENV['TABLES']
+        execute("mysqladmin #{target_db_login} drop #{target_db_info["database"]} -f", "mysqladmin drop failed")
+        execute("mysqladmin #{target_db_login} create #{target_db_info["database"]}", "mysqladmin create failed")
+      end
       execute("mysql #{target_db_login} --database #{target_db_info["database"]} < #{dump_file}", "mysql import failed")
       execute("rake db:migrate RAILS_ENV=#{target_env}", "migrate failed")
       execute("rm #{dump_file}", "rm of local unzipped #{dump_file} failed")
