@@ -137,7 +137,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       host_arg = " -h #{db_host}" if db_host
       run "mysqldump -e -q --single-transaction \
         -u #{db_info["username"]} --password=#{db_info["password"]} \
-         #{host_arg} #{db_info["database"]} #{tables}| gzip > #{dump_file}.gz"
+         #{host_arg} #{db_info["database"]} #{tables} | gzip > #{dump_file}.gz"
 
 
       get "#{dump_file}.gz", "#{dump_file}.gz"
