@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.3.5"
+  s.version = "0.3.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs"]
-  s.date = %q{2009-07-02}
+  s.date = %q{2009-07-09}
   s.default_executable = %q{fdlcap}
   s.email = %q{interactive@factorylabs.com}
   s.executables = ["fdlcap"]
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "bin/fdlcap",
+     "examples/deploy.rb",
      "fdlcap.gemspec",
      "features/fdlcap.feature",
      "features/step_definitions/fdlcap_steps.rb",
@@ -63,7 +64,8 @@ Gem::Specification.new do |s|
   s.summary = %q{a set of capistrano recipies we use regularly at Factory Design Labs}
   s.test_files = [
     "test/fdlcap_test.rb",
-     "test/test_helper.rb"
+     "test/test_helper.rb",
+     "examples/deploy.rb"
   ]
 
   if s.respond_to? :specification_version then
