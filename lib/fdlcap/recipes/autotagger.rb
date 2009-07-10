@@ -22,6 +22,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         stage_tags.each do |stage, tags|
           # remove all tags but the last n number
           tags[0..-(keep_tags + 1)].each do |tag|
+            puts `git tag -d #{tag}`
             puts `git push origin :refs/tags/#{tag}`
           end
         end
