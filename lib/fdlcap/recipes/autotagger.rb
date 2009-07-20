@@ -29,19 +29,23 @@ Capistrano::Configuration.instance(:must_exist).load do
         end
       end
       
-      desc "remove all local tags before release_tagger fetches all tags"
+      desc "remove all local stage tags before release_tagger fetches all tags"
       task :remove_local_tags, :roles => :app do
-        puts `git tag -l | xargs git tag -d` if fetch(:remove_local_tags, true)
+        autotagger_stages.each do |stage|
+          puts `git tag -l #{stage}/* | xargs git tag -d` 
+        end if fetch(:perform_remove_local_tags, true)
       end
     end
     
     # Run release tagger to get the right release for the deploy
-    before  "deploy:update_code",        "release_tagger:set_branch"
-    before  "deploy:cleanup",            "release_tagger:create_tag"
-    before  "deploy:cleanup",            "release_tagger:write_tag_to_shared"
-    before  "deploy:cleanup",            "release_tagger:remove_previous_tags"
-    before  "deploy:cleanup",            "release_tagger:print_latest_tags"
+    before  "deploy:update_code", "release_tagger:remove_local_tags"
+    before  "deploy:update_code", "release_tagger:set_branch"
     
-    before  "release_tagger:create_tag", "release_tagger:remove_local_tags"
+    before  "deploy:cleanup",     "release_tagger:create_tag"
+    before  "deploy:cleanup",     "release_tagger:write_tag_to_shared"
+    before  "deploy:cleanup",     "release_tagger:remove_previous_tags"
+    before  "deploy:cleanup",     "release_tagger:print_latest_tags"
+    
+    
   end
 end
