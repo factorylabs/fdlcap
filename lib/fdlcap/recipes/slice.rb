@@ -12,8 +12,26 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
     
     desc "Tail the Rails log for this environment"
-    task :tail_logs, :roles => :utility do
+    task :tail_logs, :roles => :app do
       run "tail -f #{shared_path}/log/#{rails_env}.log" do |channel, stream, data|
+        puts # for an extra line break before the host name
+        puts "#{channel[:server]} -> #{data}"
+        break if stream == :err
+      end
+    end
+    
+    desc "Tail the system log for this environment"
+    task :tail_syslog, :roles => :app do
+      sudo "tail -f /var/log/syslog" do |channel, stream, data|
+        puts # for an extra line break before the host name
+        puts "#{channel[:server]} -> #{data}"
+        break if stream == :err
+      end
+    end
+    
+    desc "Tail the message log for this environment"
+    task :tail_messages, :roles => :app do
+      sudo "tail -f /var/log/messages" do |channel, stream, data|
         puts # for an extra line break before the host name
         puts "#{channel[:server]} -> #{data}"
         break if stream == :err
