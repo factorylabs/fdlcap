@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.3.9"
+  s.version = "0.3.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs"]
-  s.date = %q{2009-07-20}
+  s.date = %q{2009-07-31}
   s.default_executable = %q{fdlcap}
   s.email = %q{interactive@factorylabs.com}
   s.executables = ["fdlcap"]
