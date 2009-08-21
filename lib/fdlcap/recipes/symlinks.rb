@@ -18,7 +18,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     namespace :symlinks do
 
       desc "fix symlinks to shared directory"
-      task :fix, :roles => [:app, :web] do
+      task :fix, :roles => :app, :except => { :no_release => true } do
         # for folders stored under public
         symlink_dirs.each do |share|
           run "rm -rf #{current_path}/#{share}"
@@ -28,7 +28,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
 
       desc "create symlinks to shared directory"
-      task :create, :roles => [:app, :web] do
+      task :create, :roles => :app, :except => { :no_release => true } do
         # for folders stored under public
         symlink_dirs.each do |share|
           run "rm -rf #{release_path}/#{share}"
