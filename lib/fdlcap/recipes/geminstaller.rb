@@ -20,7 +20,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :run, :only => { :geminstaller => true } do
         as = fetch(:runner, "app")
         via = fetch(:run_method, :sudo)
-        invoke_command "/usr/bin/geminstaller -c #{current_path}/config/geminstaller.yml  --geminstaller-output=all --rubygems-output=all", :via => via, :as => as
+        invoke_command "/usr/bin/geminstaller -s -c #{current_path}/config/geminstaller.yml  --geminstaller-output=all --rubygems-output=all", :via => via, :as => as
       end
 
       desc <<-DESC
@@ -36,8 +36,8 @@ Capistrano::Configuration.instance(:must_exist).load do
         end
       end
     end
-    
-    # 
+
+    #
     # Callbacks
     #
     before "deploy:check",          "geminstaller:add_remote_gem_dependencies"
@@ -45,5 +45,5 @@ Capistrano::Configuration.instance(:must_exist).load do
     after  "geminstaller:install",  "geminstaller:run"
     after  "deploy:update",         "geminstaller:run"
   end
-  
+
 end
