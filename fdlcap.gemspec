@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.3.11"
+  s.version = "0.3.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs"]
-  s.date = %q{2009-08-21}
+  s.date = %q{2009-08-24}
   s.default_executable = %q{fdlcap}
   s.email = %q{interactive@factorylabs.com}
   s.executables = ["fdlcap"]
@@ -47,6 +47,7 @@ Gem::Specification.new do |s|
      "lib/fdlcap/recipes/rsync.rb",
      "lib/fdlcap/recipes/ruby_inline.rb",
      "lib/fdlcap/recipes/sass.rb",
+     "lib/fdlcap/recipes/sinatra_passenger.rb",
      "lib/fdlcap/recipes/slice.rb",
      "lib/fdlcap/recipes/ssh.rb",
      "lib/fdlcap/recipes/stages.rb",
