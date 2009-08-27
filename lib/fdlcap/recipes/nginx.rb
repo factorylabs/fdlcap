@@ -31,11 +31,11 @@ Capistrano::Configuration.instance(:must_exist).load do
 
       %w( start stop restart reload ).each do |cmd|
         desc "#{cmd} your nginx servers"
-        task "#{cmd}".to_sym, :roles => :web do
+        task "#{cmd}".to_sym, :roles => :app do
           default_run_options[:pty] = true 
-          sudo "/etc/init.d/nginx #{cmd}"
+          sudo "nohup /etc/init.d/nginx #{cmd} > /dev/null"
         end
-      end
+      end   
   
       desc "Setup Nginx vhost config"
       task :vhost, :roles => :web do

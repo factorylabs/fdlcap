@@ -1,5 +1,7 @@
 Capistrano::Configuration.instance(:must_exist).load do
   define_recipe :sinatra_passenger do
+    use_recipe :passenger
+    
     namespace :sinatra_passenger do
       desc "Set file permissions"
       task :chmod_directories_config do
@@ -15,4 +17,5 @@ Capistrano::Configuration.instance(:must_exist).load do
     after "deploy:update_code", "sinatra_passenger:chmod_directories_config"
     after "deploy:update_code", "sinatra_passenger:chmod_directories_public"
   end
+
 end
