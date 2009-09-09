@@ -3,9 +3,10 @@ Capistrano::Configuration.instance(:must_exist).load do
     role = (ENV['ROLE'] || :app).to_sym
     servers = find_servers :roles => role
     server = servers.first
+    ssh_cmd = (File.exists?('/usr/bin/ssh-forever') ? '/usr/bin/ssh-forever' : '/usr/bin/ssh')
     if server
       `echo '#{password}' | /usr/bin/pbcopy`
-      exec "/usr/bin/ssh #{user}@#{server.host} -p #{server.port || 22} "
+      exec "#{ssh_cmd} #{user}@#{server.host} -p #{server.port || 22} "
     end
   end
   
