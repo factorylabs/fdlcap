@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.3.17"
+  s.version = "0.3.19"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs"]
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
      "lib/fdlcap/extensions/recipe_definition.rb",
      "lib/fdlcap/recipes.rb",
      "lib/fdlcap/recipes/autotagger.rb",
+     "lib/fdlcap/recipes/check_revision.rb",
      "lib/fdlcap/recipes/craken.rb",
      "lib/fdlcap/recipes/database.rb",
      "lib/fdlcap/recipes/delayed_job.rb",
@@ -45,6 +46,7 @@ Gem::Specification.new do |s|
      "lib/fdlcap/recipes/passenger.rb",
      "lib/fdlcap/recipes/performance.rb",
      "lib/fdlcap/recipes/rake.rb",
+     "lib/fdlcap/recipes/rolling_restart.rb",
      "lib/fdlcap/recipes/rsync.rb",
      "lib/fdlcap/recipes/ruby_inline.rb",
      "lib/fdlcap/recipes/sass.rb",
