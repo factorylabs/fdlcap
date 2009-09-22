@@ -131,17 +131,41 @@ Capistrano::Configuration.instance(:must_exist).load do
       database = db_info["database"]
       tables = ENV['TABLES'] ? ENV['TABLES'].split(',').join(' ') : ''
       dump_file = "/tmp/#{database}.sql"
-      
+
+      db_dump_found = false
+      run "if [ -f #{dump_file}.gz ]; then echo exists; else echo not_found; fi" do |channel, stream, data|
+        puts "Result: #{channel[:server]} -> #{dump_file}.gz ( #{data} )"
+        db_dump_found = data == 'exists' ? true : false
+        break if stream == :err
+      end
+
       db_host = db_info["host"]
       host = ""
       host_arg = " -h #{db_host}" if db_host
-      run "mysqldump -e -q --single-transaction \
+      db_dump_cmd = "mysqldump -e -q --single-transaction \
         -u #{db_info["username"]} --password=#{db_info["password"]} \
          #{host_arg} #{db_info["database"]} #{tables} | gzip > #{dump_file}.gz"
 
+      if db_dump_found
+        run "ls -l #{dump_file}.gz"
+        puts %{
+          ! INFO !: The remote database dump '#{dump_file}.gz' already exists
+
+          If you would like to use the existing database dump type "USE EXISTING":
+        }
+
+        if ($stdin.gets.strip != "USE EXISTING")
+          puts "Ignoring existing file and regenerating #{dump_file}.gz"
+          run db_dump_cmd
+        else
+          puts "You confirmed that you want to use the existing file [#{dump_file}.gz], here we go"
+        end
+      else
+        run db_dump_cmd
+      end
 
       get "#{dump_file}.gz", "#{dump_file}.gz"
-      run "rm #{dump_file}.gz"
+      run "rm #{dump_file}.gz" unless ENV['LEAVE_ON_SERVER']
 
       target_env = ENV['LOCAL_ENV'] || "development"
       target_db_info = all_db_info[target_env]
