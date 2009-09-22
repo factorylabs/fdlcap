@@ -20,7 +20,8 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :run, :only => { :geminstaller => true } do
         as = fetch(:runner, "app")
         via = fetch(:run_method, :sudo)
-        invoke_command "/usr/bin/geminstaller -s -c #{current_path}/config/geminstaller.yml  --geminstaller-output=all --rubygems-output=all", :via => via, :as => as
+        use_geminstaller_sudo = fetch(:geminstaller_sudo, false)
+        invoke_command "/usr/bin/geminstaller #{use_geminstaller_sudo ? '-s' : ''} -c #{current_path}/config/geminstaller.yml  --geminstaller-output=all --rubygems-output=all", :via => via, :as => as
       end
 
       desc <<-DESC

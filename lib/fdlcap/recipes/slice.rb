@@ -1,15 +1,6 @@
 Capistrano::Configuration.instance(:must_exist).load do
   
   namespace :slice do
-
-    desc "Tail the Rails import log for this environment"
-    task :tail_import_logs, :roles => :utility do
-      run "tail -f #{shared_path}/log/import-#{rails_env}.log" do |channel, stream, data|
-        puts # for an extra line break before the host name
-        puts "#{channel[:server]} -> #{data}"
-        break if stream == :err
-      end
-    end
     
     desc "Tail the Rails log for this environment"
     task :tail_logs, :roles => :app do
