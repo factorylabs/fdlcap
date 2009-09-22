@@ -135,7 +135,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       db_dump_found = false
       run "if [ -f #{dump_file}.gz ]; then echo exists; else echo not_found; fi" do |channel, stream, data|
         puts "Result: #{channel[:server]} -> #{dump_file}.gz ( #{data} )"
-        db_dump_found = data == 'exists' ? true : false
+        db_dump_found = data.strip == 'exists' ? true : false
         break if stream == :err
       end
 
