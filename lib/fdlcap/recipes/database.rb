@@ -131,6 +131,14 @@ Capistrano::Configuration.instance(:must_exist).load do
       database = db_info["database"]
       tables = ENV['TABLES'] ? ENV['TABLES'].split(',').join(' ') : ''
       dump_file = "/tmp/#{database}.sql"
+      
+      # look to see if a mysqldump process is already running
+      run "ps aux | grep mysqldump | wc -l" do |channel, stream, data|
+        if data.strip.to_i > 1
+          puts "It appears that mysqldump is already running on the server - is another pull task being run?  Aborting to avoid clobbering the dumpfile."
+          exit 1
+        end
+      end
 
       db_dump_found = false
       run "if [ -f #{dump_file}.gz ]; then echo exists; else echo not_found; fi" do |channel, stream, data|
