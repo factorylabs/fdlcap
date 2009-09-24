@@ -13,6 +13,7 @@ begin
     gem.add_dependency('zilkey-auto_tagger', '>= 0.0.9')
     gem.add_dependency('capistrano', '>= 2.5.5')
     gem.add_dependency('capistrano-ext', '>= 1.2.1')
+    gem.files.exclude('.gitignore')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 
