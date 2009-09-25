@@ -3,10 +3,21 @@ Capistrano::Configuration.instance(:must_exist).load do
     role = (ENV['ROLE'] || :app).to_sym
     servers = find_servers :roles => role
     server = servers.first
-    ssh_cmd = (File.exists?('/usr/bin/ssh-forever') ? '/usr/bin/ssh-forever' : '/usr/bin/ssh')
+    ssh_cmd = fetch(:ssh_cmd, '/usr/bin/ssh')
     if server
       `echo '#{password}' | /usr/bin/pbcopy`
       exec "#{ssh_cmd} #{user}@#{server.host} -p #{server.port || 22} "
+    end
+  end
+  
+  task :ssh_forever do
+    ssh_forever_binary = '/usr/bin/ssh-forever'
+    if File.exists?(ssh_forever_binary)
+      set :ssh_cmd, ssh_forever_binary
+      ssh
+    else
+      puts "#{ssh_forever_binary} not found - do you have the ssh-forever gem installed?"
+      exit 1
     end
   end
   
