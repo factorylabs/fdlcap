@@ -134,8 +134,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       # look to see if a mysqldump process is already running
       run "ps aux | grep mysqldump | wc -l" do |channel, stream, data|
-        puts data.strip.to_i
-        if data.strip.to_i > 1
+        if data.strip.to_i > 2
           puts "It appears that mysqldump is already running on the server - is another pull task being run?  Aborting to avoid clobbering the dumpfile."
           exit 1
         end
