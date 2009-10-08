@@ -12,6 +12,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         via = fetch(:run_method, :sudo)
         invoke_command "gem install geminstaller", :via => via, :as => as
         invoke_command "gem source -a http://gems.github.com", :via => via, :as => as
+        invoke_command "gem source -a http://gemcutter.org", :via => via, :as => as
       end
 
       desc <<-DESC
@@ -21,6 +22,8 @@ Capistrano::Configuration.instance(:must_exist).load do
         as = fetch(:runner, "app")
         via = fetch(:run_method, :sudo)
         use_geminstaller_sudo = fetch(:geminstaller_sudo, false)
+        invoke_command  "if ! gem source | grep -q 'http://gemcutter.org' ; then gem source -a 'http://gemcutter.org'; fi", :via => via, :as => as
+        invoke_command  "if ! gem source | grep -q 'http://gems.github.com' ; then gem source -a 'http://gems.github.com'; fi", :via => via, :as => as
         invoke_command "/usr/bin/geminstaller #{use_geminstaller_sudo ? '-s' : ''} -c #{current_path}/config/geminstaller.yml  --geminstaller-output=all --rubygems-output=all", :via => via, :as => as
       end
 
