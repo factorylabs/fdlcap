@@ -15,7 +15,7 @@ class Capistrano::Configuration
 
   def render_erb_template(filename)
     template = File.read(filename)
-    result   = ERB.new(template).result(binding)
+    result = ERB.new(template).result(binding)
   end
 
   ##
@@ -29,6 +29,28 @@ class Capistrano::Configuration
       output << data
     end
     return output.to_s
+  end
+
+  def try(command, options)
+    success = true
+    invoke_command(command, options) do |ch, stream, out|
+      warn "#{ch[:server]}: #{out}" if stream == :err
+      yield ch, stream, out if block_given?
+    end
+  rescue Capistrano::CommandError => e
+    success = false
+  end
+
+  def check(cmd, options)
+    puts cmd
+    puts options
+    success = false
+    invoke_command("if [#{cmd}]; then echo exists; else echo not_found; fi", options) do |ch, stream, out|
+      warn "#{ch[:server]}: #{out}" if stream == :err
+      success = out.strip == 'exists' ? true : false
+      break if stream == :err
+    end
+    success
   end
 
 end

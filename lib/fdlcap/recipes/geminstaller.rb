@@ -1,5 +1,8 @@
 Capistrano::Configuration.instance(:must_exist).load do
-  define_recipe :geminstaller do
+  define_recipe :geminstaller do |*sources|
+    gem_sources = sources || ['http://gems.github.com', 'http://gemcutter.org']
+    set :gem_sources, gem_sources.flatten unless exists?(:gem_sources) && !gem_sources.empty?
+
     #
     # Tasks
     #
@@ -11,8 +14,6 @@ Capistrano::Configuration.instance(:must_exist).load do
         as = fetch(:runner, "app")
         via = fetch(:run_method, :sudo)
         invoke_command "gem install geminstaller", :via => via, :as => as
-        invoke_command "gem source -a http://gems.github.com", :via => via, :as => as
-        invoke_command "gem source -a http://gemcutter.org", :via => via, :as => as
       end
 
       desc <<-DESC
@@ -22,8 +23,6 @@ Capistrano::Configuration.instance(:must_exist).load do
         as = fetch(:runner, "app")
         via = fetch(:run_method, :sudo)
         use_geminstaller_sudo = fetch(:geminstaller_sudo, false)
-        invoke_command  "if ! gem source | grep -q 'http://gemcutter.org' ; then gem source -a 'http://gemcutter.org'; fi", :via => via, :as => as
-        invoke_command  "if ! gem source | grep -q 'http://gems.github.com' ; then gem source -a 'http://gems.github.com'; fi", :via => via, :as => as
         invoke_command "/usr/bin/geminstaller #{use_geminstaller_sudo ? '-s' : ''} -c #{current_path}/config/geminstaller.yml  --geminstaller-output=all --rubygems-output=all", :via => via, :as => as
       end
 
@@ -39,15 +38,32 @@ Capistrano::Configuration.instance(:must_exist).load do
           end
         end
       end
+
+      desc <<-DESC
+      add gem sources to server
+      DESC
+      task :source_gem_servers, :only => { :geminstaller => true } do
+        as = fetch(:runner, "app")
+        via = fetch(:run_method, :sudo)
+        gem_sources.each do |source|
+          puts source
+          unless check("gem source | grep '#{source}' = '#{source}'", :via => via, :as => as)
+            invoke_command "gem source -a #{source}", :via => via, :as => as
+          end
+        end
+      end
+
+      #
+      # Callbacks
+      #
+      before "deploy:check",          "geminstaller:add_remote_gem_dependencies"
+      after "deploy:setup",          "geminstaller:install"
+      after "geminstaller:install",  "geminstaller:run"
+      after "deploy:update",         "geminstaller:run"
+
+      before "geminstaller:install", "geminstaller:source_gem_servers"
+      before "geminstaller:run",     "geminstaller:source_gem_servers"
     end
 
-    #
-    # Callbacks
-    #
-    before "deploy:check",          "geminstaller:add_remote_gem_dependencies"
-    after  "deploy:setup",          "geminstaller:install"
-    after  "geminstaller:install",  "geminstaller:run"
-    after  "deploy:update",         "geminstaller:run"
   end
-
 end
