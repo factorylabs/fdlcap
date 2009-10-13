@@ -46,9 +46,10 @@ class Capistrano::Configuration
     puts options
     success = false
     if options[:check_exit_code]
-      command = "if [#{cmd}]; then echo pass; else echo fail; fi"
+      command = "#{cmd}; if [ $? = 0 ]; then echo pass; else echo fail; fi"
+
     else
-      command = "cmd; if [ $? = 0 ]; then echo pass; else echo fail; fi"
+      command = "if [#{cmd}]; then echo pass; else echo fail; fi"
     end
     invoke_command(command, options) do |ch, stream, out|
       warn "#{ch[:server]}: #{out}" if stream == :err
