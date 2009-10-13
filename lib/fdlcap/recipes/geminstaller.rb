@@ -1,7 +1,8 @@
 Capistrano::Configuration.instance(:must_exist).load do
   define_recipe :geminstaller do |*sources|
-    gem_sources = sources || ['http://gems.github.com', 'http://gemcutter.org']
-    set :gem_sources, gem_sources.flatten unless exists?(:gem_sources) && !gem_sources.empty?
+    DEFAULT_GEM_SOURCES = ['http://gems.github.com', 'http://gemcutter.org']
+    
+    set :gem_sources, (sources + DEFAULT_GEM_SOURCES).flatten unless exists?(:gem_sources)
 
     #
     # Tasks
@@ -45,10 +46,12 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :source_gem_servers, :only => { :geminstaller => true } do
         as = fetch(:runner, "app")
         via = fetch(:run_method, :sudo)
+
+        puts "Checking gem sources => #{gem_sources.inspect}"
         gem_sources.each do |source|
           puts source
-          unless check("gem source | grep '#{source}' = '#{source}'", :via => via, :as => as)
-            invoke_command "gem source -a #{source}", :via => via, :as => as
+          unless check("gem source | grep -q '#{source}'", :via => via, :as => as, :check_exit_code => true)
+            sudo "gem source -a #{source}"
           end
         end
       end
@@ -56,7 +59,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       #
       # Callbacks
       #
-      before "deploy:check",          "geminstaller:add_remote_gem_dependencies"
+      before "deploy:check",         "geminstaller:add_remote_gem_dependencies"
       after "deploy:setup",          "geminstaller:install"
       after "geminstaller:install",  "geminstaller:run"
       after "deploy:update",         "geminstaller:run"

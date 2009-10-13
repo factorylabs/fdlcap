@@ -45,9 +45,14 @@ class Capistrano::Configuration
     puts cmd
     puts options
     success = false
-    invoke_command("if [#{cmd}]; then echo exists; else echo not_found; fi", options) do |ch, stream, out|
+    if options[:check_exit_code]
+      command = "if [#{cmd}]; then echo pass; else echo fail; fi"
+    else
+      command = "cmd; if [ $? = 0 ]; then echo pass; else echo fail; fi"
+    end
+    invoke_command(command, options) do |ch, stream, out|
       warn "#{ch[:server]}: #{out}" if stream == :err
-      success = out.strip == 'exists' ? true : false
+      success = out.strip == 'pass' ? true : false
       break if stream == :err
     end
     success
