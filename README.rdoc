@@ -47,7 +47,7 @@ Recipes can also take arguments (such as in the stages recipe)
     require 'capistrano/ext/multistage'
   end
 
-==Prereqs
+== Prereqs
 
 Aside from capistrano, fdlcap depends on the following gems:
 
@@ -55,11 +55,19 @@ Aside from capistrano, fdlcap depends on the following gems:
 - engineyard-eycap (for deployment configurations and support recipes - http://github.com/engineyard/eycap)
 - zilkey-auto_tagger (for rolling deploy tags via git - http://github.com/zilkey/auto_tagger)
 
-These should all be installed automatically by rubygems when you install fdlcap.  
+These should all be installed automatically by rubygems when you install fdlcap.
 
-==Installation
+For development, make sure you have bundler installed (http://github.com/wycats/bundler)
 
-  sudo gem install factorylabs-fdlcap --source=http://gems.github.com
+    $ gem install bundler
+    $ git clone git://github.com/factorylabs/fdlcap.git
+    $ cd fdlcap
+    $ gem bundle
+    $ ./gbin/rake
+
+== Installation
+
+  sudo gem install fdlcap --source http://gemcutter.org
 
 You may want to add the gem to your config.gems or geminstaller config as well.
 

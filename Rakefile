@@ -1,5 +1,7 @@
-require 'rubygems'
+require File.join(File.expand_path(File.dirname(__FILE__)), 'vendor', 'gems', 'environment')
+Bundler.require_env
 require 'rake'
+require 'bundler'
 
 begin
   require 'jeweler'
@@ -8,11 +10,14 @@ begin
     gem.summary = %Q{a set of capistrano recipies we use regularly at Factory Design Labs}
     gem.email = "interactive@factorylabs.com"
     gem.homepage = "http://github.com/factorylabs/fdlcap"
-    gem.authors = ["Factory Design Labs"]
-    gem.add_dependency('engineyard-eycap', '>= 0.4.7')
-    gem.add_dependency('zilkey-auto_tagger', '>= 0.0.9')
-    gem.add_dependency('capistrano', '>= 2.5.5')
-    gem.add_dependency('capistrano-ext', '>= 1.2.1')
+    gem.authors = ["Factory Design Labs", "Gabe Varela", "Jay Zeschin" ]
+
+    manifest = Bundler::Environment.load(File.dirname(__FILE__) + '/Gemfile')
+    manifest.dependencies.each do |d|
+      next if d.only
+      gem.add_dependency(d.name, d.version)
+    end
+
     gem.files.exclude('.gitignore')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
@@ -38,15 +43,6 @@ begin
 rescue LoadError
   task :rcov do
     abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
-  end
-end
-
-begin
-  require 'cucumber/rake/task'
-  Cucumber::Rake::Task.new(:features)
-rescue LoadError
-  task :features do
-    abort "Cucumber is not available. In order to run features, you must: sudo gem install cucumber"
   end
 end
 
