@@ -53,7 +53,7 @@ Aside from capistrano, fdlcap depends on the following gems:
 
 - capistrano-ext (for multistage deployments)
 - engineyard-eycap (for deployment configurations and support recipes - http://github.com/engineyard/eycap)
-- zilkey-auto_tagger (for rolling deploy tags via git - http://github.com/zilkey/auto_tagger)
+- auto_tagger (for rolling deploy tags via git - http://github.com/zilkey/auto_tagger)
 
 These should all be installed automatically by rubygems when you install fdlcap.
 
