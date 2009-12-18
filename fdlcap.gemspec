@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.3.34"
+  s.version = "0.3.35"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs", "Gabe Varela", "Jay Zeschin"]
-  s.date = %q{2009-12-09}
+  s.date = %q{2009-12-18}
   s.default_executable = %q{fdlcap}
   s.email = %q{interactive@factorylabs.com}
   s.executables = ["fdlcap"]
@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
      "lib/fdlcap/extensions/configuration.rb",
      "lib/fdlcap/extensions/recipe_definition.rb",
      "lib/fdlcap/recipes.rb",
+     "lib/fdlcap/recipes/automigrate.rb",
      "lib/fdlcap/recipes/autotagger.rb",
      "lib/fdlcap/recipes/check_revision.rb",
      "lib/fdlcap/recipes/craken.rb",
