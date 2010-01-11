@@ -10,6 +10,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     use_recipe :geminstaller
     use_recipe :perform_cleanup
     use_recipe :symlink_configs
+    use_recipe :automigrate
      
   end
   
