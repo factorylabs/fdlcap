@@ -15,6 +15,9 @@ Capistrano::Configuration.instance(:must_exist).load do
     #
     
     # Generate all the stylesheets manually (from their Sass templates) before each restart.
-    before 'deploy:restart',          'sass:update'
+    after 'deploy:finalize_update' do
+      look_for_stylesheet_changes
+      before('deploy:restart', 'sass:update') if stylesheets_changed?
+    end
   end
 end

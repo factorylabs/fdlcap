@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs", "Gabe Varela", "Jay Zeschin"]
-  s.date = %q{2010-01-11}
+  s.date = %q{2010-01-13}
   s.default_executable = %q{fdlcap}
   s.email = %q{interactive@factorylabs.com}
   s.executables = ["fdlcap"]
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "features/step_definitions/fdlcap_steps.rb",
      "features/support/env.rb",
      "lib/fdlcap.rb",
+     "lib/fdlcap/extensions/check_for_changes.rb",
      "lib/fdlcap/extensions/configuration.rb",
      "lib/fdlcap/extensions/recipe_definition.rb",
      "lib/fdlcap/recipes.rb",
