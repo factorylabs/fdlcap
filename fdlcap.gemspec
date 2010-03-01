@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fdlcap}
-  s.version = "0.4.2"
+  s.version = "0.4.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Factory Design Labs", "Gabe Varela", "Jay Zeschin"]
-  s.date = %q{2010-01-14}
+  s.date = %q{2010-03-01}
   s.default_executable = %q{fdlcap}
   s.email = %q{interactive@factorylabs.com}
   s.executables = ["fdlcap"]
@@ -69,7 +69,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/factorylabs/fdlcap}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{a set of capistrano recipies we use regularly at Factory Design Labs}
   s.test_files = [
     "test/fdlcap_test.rb",

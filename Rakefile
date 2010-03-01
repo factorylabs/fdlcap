@@ -1,7 +1,15 @@
-require File.join(File.expand_path(File.dirname(__FILE__)), 'vendor', 'gems', 'environment')
-Bundler.require_env
-require 'rake'
-require 'bundler'
+begin
+  # Require the preresolved locked set of gems.
+  require File.expand_path('../.bundle/environment', __FILE__)
+rescue LoadError
+  # Fallback on doing the resolve at runtime.
+  require "rubygems"
+  require "bundler"
+  Bundler.setup
+end
+
+require "rake/testtask"
+require "rake/clean"
 
 begin
   require 'jeweler'
@@ -12,10 +20,10 @@ begin
     gem.homepage = "http://github.com/factorylabs/fdlcap"
     gem.authors = ["Factory Design Labs", "Gabe Varela", "Jay Zeschin" ]
 
-    manifest = Bundler::Environment.load(File.dirname(__FILE__) + '/Gemfile')
+    manifest = Bundler.definition
     manifest.dependencies.each do |d|
-      next if d.only
-      gem.add_dependency(d.name, d.version)
+      next unless d.groups.include?(:dependency)
+      gem.add_dependency(d.name, d.requirement.to_s)
     end
 
     gem.files.exclude('.gitignore')
