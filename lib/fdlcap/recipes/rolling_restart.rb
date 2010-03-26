@@ -13,8 +13,8 @@ Capistrano::Configuration.instance(:must_exist).load do
           puts "Waiting 10 seconds for mongrels to finish processing on #{ENV['HOSTS']}."
           sleep 10
           mongrel.restart
-          puts "Waiting 30 seconds for mongrels to come back up on #{ENV['HOSTS']}."
-          sleep 30
+          puts "Waiting 60 seconds for mongrels to come back up on #{ENV['HOSTS']}."
+          sleep 60
           nginx.start
         end
       end
