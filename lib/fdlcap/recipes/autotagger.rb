@@ -4,7 +4,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     set :autotagger_stages, stages.flatten unless exists?(:autotagger_stages)  && !stages.empty?
     
     # This needs to be loaded after the stages are set up
-    require 'release_tagger'
+    require 'auto_tagger'
     
     set :keep_release_tags, 5 unless exists?(:keep_release_tags)
     namespace :release_tagger do
