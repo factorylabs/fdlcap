@@ -7,14 +7,19 @@ Capistrano::Configuration.instance(:must_exist).load do
       Do a rolling restart of mongrels, one app server at a time.
       DESC
       task :rolling_restart do
-        find_servers(:roles => :app).each do |server|
+        server_list = find_servers(:roles => :app)
+        server_list.each do |server|
           ENV['HOSTS'] = "#{server.host}:#{server.port}"
           nginx.stop
-          puts "Waiting 10 seconds for mongrels to finish processing on #{ENV['HOSTS']}."
-          sleep 10
+          if server_list.size > 1
+            puts "Waiting 10 seconds for mongrels to finish processing on #{ENV['HOSTS']}."
+            sleep 10
+          end
           mongrel.restart
-          puts "Waiting 60 seconds for mongrels to come back up on #{ENV['HOSTS']}."
-          sleep 60
+          if server_list.size > 1
+            puts "Waiting 60 seconds for mongrels to come back up on #{ENV['HOSTS']}."
+            sleep 60
+          end
           nginx.start
         end
       end
