@@ -13,6 +13,8 @@ Capistrano::Configuration.instance(:must_exist).load do
       if db_changed?
         after "deploy:migrate",           "sphinx:configure"
         after "deploy:migrate",           "sphinx:reindex"
+      else
+        sphinx.restart
       end
     end
   end
