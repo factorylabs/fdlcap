@@ -14,7 +14,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         after "deploy:migrate",           "sphinx:configure"
         after "deploy:migrate",           "sphinx:reindex"
       else
-        sphinx.restart
+        after "deploy:symlink",           "sphinx:restart"
       end
     end
   end
