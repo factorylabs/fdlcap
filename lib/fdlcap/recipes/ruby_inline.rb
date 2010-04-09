@@ -11,7 +11,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     
     # todo - revisit this, currently a hack to temporarily fix an issue with sphinx and ruby_inline
     task :chmod_release_path, :roles => :app, :except => {:no_release => true, :no_symlink => true} do
-      run "chmod 755 #{release_path}"
+      run "chmod 755 #{current_path}"
     end
     
     #
