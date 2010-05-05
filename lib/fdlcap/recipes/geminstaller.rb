@@ -13,7 +13,10 @@ Capistrano::Configuration.instance(:must_exist).load do
       DESC
       task :install, :only => { :geminstaller => true } do
         as = fetch(:runner, "app")
-        via = fetch(:run_method, :sudo)
+        use_geminstaller_sudo = fetch(:geminstaller_sudo, false)
+        # if we are forcing the geminstaller sudo flag make sure to call with sudo so the password prompt works
+        # properly with capistrano
+        via = use_geminstaller_sudo ? :sudo : fetch(:run_method, :sudo)
         invoke_command "gem install geminstaller", :via => via, :as => as
       end
 
@@ -22,8 +25,10 @@ Capistrano::Configuration.instance(:must_exist).load do
       DESC
       task :run, :only => { :geminstaller => true } do
         as = fetch(:runner, "app")
-        via = fetch(:run_method, :sudo)
         use_geminstaller_sudo = fetch(:geminstaller_sudo, false)
+        # if we are forcing the geminstaller sudo flag make sure to call with sudo so the password prompt works
+        # properly with capistrano
+        via = use_geminstaller_sudo ? :sudo : fetch(:run_method, :sudo)
         invoke_command "/usr/bin/geminstaller #{use_geminstaller_sudo ? '-s' : ''} -c #{current_path}/config/geminstaller.yml  --geminstaller-output=all --rubygems-output=all", :via => via, :as => as
       end
 
